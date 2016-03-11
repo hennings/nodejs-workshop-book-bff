@@ -1,25 +1,38 @@
 var express = require('express');
 var router = express.Router();
-var request = require("request");
+var goodGuyLib = require("good-guy-http");
+var jp = require('jsonpath');
+
+var gg = goodGuyLib({
+    maxRetries: 3,
+    defaultCaching: {
+        cached: true,
+        timeToLive: 5000,
+    },
+    cache: goodGuyLib.inMemoryCache(10)
+});
+
+// 3 retries, cache-cont, 5 secs,
 
 /* GET book listing. */
-router.get('/:isbn', function(req, res, next) {
-  var isbn = req.params.isbn;
-  var cover;
+router.get('/:isbn', function (req, res, next) {
+    var isbn = req.params.isbn;
 
-  var url = 'https://book-catalog-proxy-2.herokuapp.com/book?isbn='+isbn;
+    var url = 'https://book-catalog-proxy-3.herokuapp.com/book?isbn=' + isbn;
 
-  request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      //console.log(body) // Show the HTML for the Google homepage.
-      var j = JSON.parse(body);
-      res.render('book', {isbn: isbn,
-        cover: j.items[0].volumeInfo.imageLinks.thumbnail,
-        title: j.items[0].volumeInfo.title
-      })
-    }
-  })
+    gg(url).then(function (response) {
+        var j0 = JSON.parse(response.body);
+        var cover = jp.value(j0, "$.items[0].volumeInfo.imageLinks.thumbnail");
+        var title = jp.value(j0, "$.items[0].volumeInfo.title");
 
-});
+        res.render('book', {
+            isbn: isbn,
+            cover: cover,
+            title: title
+        })
+    }).catch(next)
+
+})
+;
 
 module.exports = router;
