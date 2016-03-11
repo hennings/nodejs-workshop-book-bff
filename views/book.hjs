@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    {{isbn}} - <img src="{{cover}}"/>
+    <p>Welcome to the nice book: <em>{{ title }}</em></p>
+  </body>
+</html>
