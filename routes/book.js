@@ -56,7 +56,12 @@ module.exports = function (app) {
                     });
                 })
             })
-            .then(function(r) {return esi.process(r) })
+            .then(function(r) {return esi.process(r, {
+                    headers: {
+                        'x-request-id': '12345678'
+                    }
+
+            }) })
             .then(function(html) { return res.send(html) })
 
             .catch(next)
