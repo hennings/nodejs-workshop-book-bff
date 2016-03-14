@@ -30,7 +30,15 @@ module.exports = function (app) {
     router.get('/:isbn', function (req, res, next) {
         var isbn = req.params.isbn;
 
+        console.log("looking for info about " + isbn + " - HS");
+
         var url = 'https://book-catalog-proxy-3.herokuapp.com/book?isbn=' + isbn;
+
+        var stockUrl = 'https://deep-powder-books-1337.herokuapp.com/stock/'+isbn;
+
+        gg(stockUrl).then(function(response) {
+
+        })
 
         gg(url).then(function (response) {
                 var j0 = JSON.parse(response.body);
