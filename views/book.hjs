@@ -5,6 +5,7 @@
   <head>
     <title>{{ title }}</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta name="x-request-id" value="{{requestId}}" />
   </head>
 
   <body>

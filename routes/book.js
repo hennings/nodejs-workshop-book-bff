@@ -3,6 +3,7 @@ module.exports = function (app) {
     var router = express.Router();
     var goodGuyLib = require("good-guy-http");
     var jp = require('jsonpath');
+    var uuid = require('uuid');
 
     var gg = goodGuyLib({
         maxRetries: 3,
@@ -31,6 +32,7 @@ module.exports = function (app) {
         var isbn = req.params.isbn;
 
         console.log("looking for info about " + isbn + " - HS");
+        const requestId =  uuid.v1();
 
         var url = 'https://book-catalog-proxy-3.herokuapp.com/book?isbn=' + isbn;
 
@@ -49,7 +51,8 @@ module.exports = function (app) {
                     app.render('book', {
                         isbn: isbn,
                         cover: cover,
-                        title: title
+                        title: title,
+                        requestId: requestId
                     }, function (err, res) {
                         if (err) reject(err)
                         resolve(res.toString());
@@ -58,7 +61,7 @@ module.exports = function (app) {
             })
             .then(function(r) {return esi.process(r, {
                     headers: {
-                        'x-request-id': '12345678'
+                        'x-request-id': requestId
                     }
 
             }) })
