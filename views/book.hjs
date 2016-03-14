@@ -18,7 +18,11 @@
 
     <p>Welcome to the nice book: <em>{{ title }}</em></p>
 
+Inventory:    <esi:include src="https://deep-powder-books-1337.herokuapp.com/stock/{{isbn}}"/>
+
+
     <esi:include src="https://kwasniew.github.io/footer.html" />
+
 
   </body>
 
