@@ -3,7 +3,7 @@ module.exports = function (app) {
     var router = express.Router();
     var goodGuyLib = require("good-guy-http");
     var jp = require('jsonpath');
-    var uuid = require('uuid');
+    var uuid = require('node-uuid');
 
     var gg = goodGuyLib({
         maxRetries: 3,
